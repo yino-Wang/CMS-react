@@ -1,5 +1,5 @@
-body{
-    div{
-        color: blue;
-    }
+html,
+body,
+#root {
+  height: 100%; //这就是让所有布局从最顶层开始有高度，然后子元素才能继承并撑满它
 }

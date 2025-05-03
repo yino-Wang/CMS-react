@@ -1,0 +1,39 @@
+
+.ant-layout {
+    height: 100%; //继承父元素高度100% 父元素高度定义在主index中
+  }
+  
+  .header {
+    padding: 0;
+  }
+  
+  .logo {
+    width: 200px;
+    height: 60px;
+    background: url('../../assets/logo.png') no-repeat center / 160px auto;
+  }
+  
+  .layout-content {
+    overflow-y: auto; //右侧主内容区域类名，启用垂直滚动条，防止内容溢出时看不到。
+  }
+  
+  .user-info {
+    position: absolute; //绝对定位在右上角，字体为白色
+    right: 0;
+    top: 0;
+    padding-right: 10px;
+    color: #fff;
+    
+    .user-name {
+      margin-right: 20px;
+    }
+    
+    .user-logout {
+      display: inline-block; //设置为行内块 + 鼠标移上去有手型提示（可点击）
+      cursor: pointer;
+      margin-right: 10px;
+    }
+  }
+  .ant-layout-header {
+    padding: 0 !important;
+  }
