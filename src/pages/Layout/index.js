@@ -22,12 +22,12 @@ const items = [
     icon: <HomeOutlined />,
   },
   {
-    label: 'Article Management',
+    label: 'Post Management',
     key: '/article',
     icon: <DiffOutlined />,
   },
   {
-    label: 'Create Articles',
+    label: 'Create Post',
     key: '/create',
     icon: <EditOutlined />,
   },
@@ -59,6 +59,10 @@ const GeekLayout = () => {
         dispatch(clearUserInfo())
         navigate('/login')
     }
+
+    //长时间未做操作token失效 token失效后在请求接口 后端会返回401 前端可以监控这个状态来判断是否token失效
+    //失效后 => 在axios拦截中监控401状态码 => 清除失效token 跳转登录
+
     return (
     <Layout>
       <Header className="header">

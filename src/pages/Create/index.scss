@@ -1,0 +1,18 @@
+.publish {
+    position: relative;
+  }
+  
+//Ant Design 中上传组件上传列表的容器类
+  .ant-upload-list {
+    .ant-upload-list-picture-card-container, //“图片卡片”风格上传组件的外层容器
+    .ant-upload-select { //上传框区域（每一项图片或 “+” 按钮）宽高固定为 146×146px
+      width: 146px;
+      height: 146px;
+    }
+  }
+
+  .publish-quill {
+    .ql-editor {
+      min-height: 300px;
+    }
+  }
