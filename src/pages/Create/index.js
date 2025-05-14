@@ -7,65 +7,24 @@ import {
     Input,
     Upload,
     Space,
-    Select
+    Select,
+    message
   } from 'antd'
   import { PlusOutlined } from '@ant-design/icons'
   import { Link } from 'react-router-dom'
   import './index.scss'
   import ReactQuill from 'react-quill'
   import 'react-quill/dist/quill.snow.css'
-import { useEffect, useState } from 'react'
-import { createArticleAPI, getChannelAPI } from '../../apis/article'
-  
+  import { useCallback, useEffect, useState } from 'react'
+  import { createArticleAPI, getChannelAPI } from '../../apis/article'
+  import { useChannel } from '../../hooks/useChannel'
+    
   const { Option } = Select
-  
+ 
   const Create = () => {
     //获取频道列表
-    const [channelList,setChannelList] = useState([])
-/*    useEffect(() => {
-      const getChannelList = async () => {
-        try {
-          const res = await getChannelAPI()
-          if (res?.data?.channels) {
-            setChannelList(res.data.data.channels)
-          } else {
-            console.warn('频道列表返回为空或格式异常:', res)
-          }
-        } catch (error) {
-          if (error.response && error.response.status) {
-            console.error('频道列表请求失败，状态码:', error.response.status)
-          } else {
-            console.error('频道请求网络错误:', error.message)
-          }
-        }
-      }
-    
-      getChannelList()
-    }, [])    */
-    useEffect(() => {
-      const getChannelList = async () => {
-        try {
-          const res = await getChannelAPI()
-          const channels = res?.data?.data?.channels  // ✅ 多层嵌套取出数据
-    
-          if (channels && Array.isArray(channels)) {
-            setChannelList(channels)
-          } else {
-            console.warn('频道列表返回为空或格式异常:', res)
-          }
-        } catch (error) {
-          if (error.response && error.response.status) {
-            console.error('频道列表请求失败，状态码:', error.response.status)
-          } else {
-            console.error('频道请求网络错误:', error.message)
-          }
-        }
-      }
-    
-      getChannelList()
-    }, [])
-     
-
+    const {channelList} = useChannel()
+    const [form] = Form.useForm()
     //提交表单
     const onFinish = async (formValue) => {
       const { title, content, channel_id } = formValue
@@ -81,10 +40,14 @@ import { createArticleAPI, getChannelAPI } from '../../apis/article'
     
       try {
         const res = await createArticleAPI(reqData)
-        if (res?.status === 201) {
+        if (res?.status === 201 || res?.status === 200) {
           console.log('发布成功')
+          message.success('Published successfully!')
+
         } else {
           console.warn('文章发布返回异常:', res)
+          message.success('Published successfully!')
+
         }
       } catch (error) {
         if (error.response && error.response.status) {
@@ -108,6 +71,7 @@ import { createArticleAPI, getChannelAPI } from '../../apis/article'
       console.log('change cover',e.target.value)
       setImageType(e.target.value)
     }
+
     return (
       <div className="publish">
         <Card
