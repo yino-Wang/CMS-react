@@ -29,3 +29,13 @@ export function getArticleListAPI(params){
         params
     })
 }
+
+//删除文章
+export function delArticleAPI(id){
+    return request({
+        /*id = 123 时，最终 URL 是 /mp/articles/123
+        你在删除某一篇文章时，需要传入这篇文章的 ID，拼接成后端对应的接口地址。 */
+        url: `/mp/articles/${id}`,
+        method: 'DELETE'
+    })
+}
