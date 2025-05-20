@@ -11,12 +11,12 @@ import {
     message
   } from 'antd'
   import { PlusOutlined } from '@ant-design/icons'
-  import { Link } from 'react-router-dom'
+  import { Link, useSearchParams } from 'react-router-dom'
   import './index.scss'
   import ReactQuill from 'react-quill'
   import 'react-quill/dist/quill.snow.css'
   import { useCallback, useEffect, useState } from 'react'
-  import { createArticleAPI, getChannelAPI } from '../../apis/article'
+  import { createArticleAPI, getArticleById, getChannelAPI } from '../../apis/article'
   import { useChannel } from '../../hooks/useChannel'
     
   const { Option } = Select
@@ -72,6 +72,26 @@ import {
       setImageType(e.target.value)
     }
 
+    //点击edit后跳转到create页面 回填数据
+    const [searchParams] = useSearchParams()
+    const articleId = searchParams.get('id')
+    //获取实例
+useEffect(() => {
+    // 1. 通过id获取数据
+    async function getArticleDetail () {
+      const res = await getArticleById(articleId)
+      console.log('接口返回数据:', res)
+      form.setFieldsValue(res.data)
+      console.log('接口返回数据22:', res.data)
+    }
+    // 只有有id的时候才能调用此函数回填
+    if (articleId) {
+      getArticleDetail()
+    }
+    // 2. 调用实例方法 完成回填
+  }, [articleId, form])
+
+    
     return (
       <div className="publish">
         <Card
@@ -88,6 +108,7 @@ import {
             wrapperCol={{ span: 16 }}
             initialValues={{ type: 0 }}
             onFinish={onFinish}
+            form={form}
           >
             <Form.Item
               label="Title"
@@ -106,8 +127,8 @@ import {
                 {channelList.map(item => <Option key = {item.id} value = {item.id}>{item.name}</Option>)}
               </Select>
             </Form.Item>
-            <Form.Item label="封面">
-              <Form.Item name="type">
+            <Form.Item label="cover">
+            <Form.Item name="type">
                 <Radio.Group onChange={onTypeChange}>
                   <Radio value={1}>Single picture</Radio>
                   <Radio value={3}>Triple picture</Radio>
@@ -126,6 +147,7 @@ import {
                             onChange={onChange}
                             name='image'
                             maxCount={imageType}
+                            fileList={imageList}
                           >
                             <div style={{ marginTop: 8 }}>
                               <PlusOutlined />
